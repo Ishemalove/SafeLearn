@@ -78,10 +78,3 @@ pnpm start
 - `public/` – Static assets
 - `styles/` – Global styles
 
-## License
-
-[MIT](LICENSE) (add your license file if needed)
-
----
-
-*This README was generated based on available project metadata. For a more detailed description or feature list, please update this file with specifics about your app!* 
