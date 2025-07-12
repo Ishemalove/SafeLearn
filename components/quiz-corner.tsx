@@ -95,6 +95,11 @@ export default function QuizCorner({ progress, onProgressUpdate, onBack }: QuizC
     setAnsweredQuestions(new Array(QUIZ_QUESTIONS.length).fill(false))
   }
 
+  const playSound = (type: 'correct' | 'wrong') => {
+    const audio = new Audio(type === 'correct' ? '/correct.mp3' : '/wrong.mp3')
+    audio.play()
+  }
+
   const selectAnswer = (answerIndex: number) => {
     if (selectedAnswer !== null) return
 
@@ -103,6 +108,9 @@ export default function QuizCorner({ progress, onProgressUpdate, onBack }: QuizC
 
     if (isCorrect) {
       setScore((prev) => prev + 10)
+      playSound('correct')
+    } else {
+      playSound('wrong')
     }
 
     const newAnswered = [...answeredQuestions]

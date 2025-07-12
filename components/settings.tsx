@@ -217,6 +217,40 @@ export default function Settings({ onBack, onReset }: SettingsProps) {
           <p className="text-sm font-comic text-gray-600">A safe, educational app designed for children aged 5-12</p>
           <p className="text-xs font-comic text-gray-500 mt-2">Built with ❤️ for young learners everywhere</p>
         </div>
+
+        <div className="mt-12 bg-white/70 rounded-xl p-8">
+          <h3 className="text-2xl font-bold text-gray-700 mb-6 font-comic">📊 Child Progress Dashboard</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {/* Example progress for each module */}
+            {Object.entries(JSON.parse(localStorage.getItem("safelearn-progress") || '{}')).map(([module, data]: any) => (
+              <div key={module} className="bg-white/90 rounded-lg p-4 shadow">
+                <h4 className="font-bold text-lg mb-2 capitalize font-comic">{module}</h4>
+                <p className="text-sm font-comic mb-1">Score: {data.score ?? 0}</p>
+                <p className="text-sm font-comic mb-1">Level: {data.level ?? 1}</p>
+                <p className="text-sm font-comic mb-1">Badges: {data.badges?.length ?? 0}</p>
+              </div>
+            ))}
+          </div>
+          <h4 className="text-xl font-bold text-gray-700 mb-4 font-comic">🎯 Set Daily Goals</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {['typing','learn','math','quiz','science','reading','logic'].map((module) => (
+              <div key={module} className="bg-white/90 rounded-lg p-4 shadow flex flex-col items-center">
+                <span className="font-comic mb-2 capitalize">{module}</span>
+                <input type="number" min="1" max="100" placeholder="Goal (score)" className="border rounded p-1 text-center mb-2" />
+                <button className="bg-blue-500 text-white px-3 py-1 rounded font-comic">Save Goal</button>
+              </div>
+            ))}
+          </div>
+          <h4 className="text-xl font-bold text-gray-700 mb-4 font-comic">🔒 Restrict Module Access</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {['typing','learn','math','quiz','science','reading','logic'].map((module) => (
+              <div key={module} className="bg-white/90 rounded-lg p-4 shadow flex flex-col items-center">
+                <span className="font-comic mb-2 capitalize">{module}</span>
+                <button className="bg-red-500 text-white px-3 py-1 rounded font-comic">Toggle Access</button>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

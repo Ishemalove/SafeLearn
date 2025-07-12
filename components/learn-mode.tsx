@@ -103,6 +103,11 @@ export default function LearnMode({ progress, onProgressUpdate, onBack }: LearnM
     }
   }
 
+  const playSound = (type: 'correct' | 'wrong') => {
+    const audio = new Audio(type === 'correct' ? '/correct.mp3' : '/wrong.mp3')
+    audio.play()
+  }
+
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">

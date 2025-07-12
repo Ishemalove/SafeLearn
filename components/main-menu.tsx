@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Star, Trophy, Settings } from "lucide-react"
+import MusicToggle from "@/components/ui/music-toggle"
 
 interface MainMenuProps {
   childName: string
@@ -105,11 +106,18 @@ export default function MainMenu({ childName, progress, onNavigate }: MainMenuPr
 
       {/* Quick Access */}
       <div className="max-w-2xl mx-auto flex justify-center gap-4">
+        <MusicToggle />
         <Button
           onClick={() => onNavigate("achievements")}
           className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white rounded-full px-8 py-3 font-comic"
         >
           🏆 My Achievements
+        </Button>
+        <Button
+          onClick={() => onNavigate("rewards")}
+          className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white rounded-full px-8 py-3 font-comic"
+        >
+          🎁 Rewards & Shop
         </Button>
       </div>
     </div>

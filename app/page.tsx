@@ -9,6 +9,10 @@ import MathZone from "@/components/math-zone"
 import QuizCorner from "@/components/quiz-corner"
 import Achievements from "@/components/achievements"
 import Settings from "@/components/settings"
+import ScienceZone from "@/components/science-zone"
+import ReadingRoom from "@/components/reading-room"
+import LogicPuzzles from "@/components/logic-puzzles"
+import RewardsShop from "@/components/rewards-shop"
 
 export default function SafeLearnJunior() {
   const [currentScreen, setCurrentScreen] = useState("welcome")
@@ -18,19 +22,22 @@ export default function SafeLearnJunior() {
     learn: { completedLessons: [], currentLesson: 0 },
     math: { level: 1, score: 0, badges: [] },
     quiz: { score: 0, badges: [] },
+    science: { level: 1, score: 0, badges: [] },
+    reading: { level: 1, score: 0, badges: [] },
+    logic: { level: 1, score: 0, badges: [] },
   })
 
   // Load progress from localStorage on mount
   useEffect(() => {
-    const savedProgress = localStorage.getItem("safelearn-progress")
     const savedName = localStorage.getItem("safelearn-child-name")
-
-    if (savedProgress) {
-      setUserProgress(JSON.parse(savedProgress))
-    }
     if (savedName) {
       setChildName(savedName)
       setCurrentScreen("menu")
+    }
+    
+    const savedProgress = localStorage.getItem("safelearn-progress")
+    if (savedProgress) {
+      setUserProgress(JSON.parse(savedProgress))
     }
   }, [])
 
@@ -84,6 +91,32 @@ export default function SafeLearnJunior() {
             onBack={() => setCurrentScreen("menu")}
           />
         )
+      case "science":
+        return (
+          <ScienceZone
+            progress={userProgress.science}
+            onProgressUpdate={(science) => saveProgress({ ...userProgress, science })}
+            onBack={() => setCurrentScreen("menu")}
+          />
+        )
+      case "reading":
+        return (
+          <ReadingRoom
+            progress={userProgress.reading}
+            onProgressUpdate={(reading) => saveProgress({ ...userProgress, reading })}
+            onBack={() => setCurrentScreen("menu")}
+          />
+        )
+      case "logic":
+        return (
+          <LogicPuzzles
+            progress={userProgress.logic}
+            onProgressUpdate={(logic) => saveProgress({ ...userProgress, logic })}
+            onBack={() => setCurrentScreen("menu")}
+          />
+        )
+      case "rewards":
+        return <RewardsShop progress={userProgress} onBack={() => setCurrentScreen("menu")} />
       case "achievements":
         return <Achievements progress={userProgress} childName={childName} onBack={() => setCurrentScreen("menu")} />
       case "settings":
@@ -98,6 +131,9 @@ export default function SafeLearnJunior() {
                 learn: { completedLessons: [], currentLesson: 0 },
                 math: { level: 1, score: 0, badges: [] },
                 quiz: { score: 0, badges: [] },
+                science: { level: 1, score: 0, badges: [] },
+                reading: { level: 1, score: 0, badges: [] },
+                logic: { level: 1, score: 0, badges: [] },
               })
               setCurrentScreen("welcome")
             }}

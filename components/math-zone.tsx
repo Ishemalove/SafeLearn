@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { ArrowLeft, Star } from "lucide-react"
+import Confetti from "@/components/ui/confetti"
 
 interface MathZoneProps {
   progress: any
@@ -27,6 +28,8 @@ export default function MathZone({ progress, onProgressUpdate, onBack }: MathZon
   const [lives, setLives] = useState(3)
   const [problemCount, setProblemCount] = useState(0)
   const [feedback, setFeedback] = useState<"correct" | "incorrect" | null>(null)
+  const [showConfetti, setShowConfetti] = useState(false)
+  const [shake, setShake] = useState(false)
 
   const generateAdditionProblem = (): MathProblem => {
     const a = Math.floor(Math.random() * 10) + 1
@@ -93,6 +96,11 @@ export default function MathZone({ progress, onProgressUpdate, onBack }: MathZon
     setFeedback(null)
   }
 
+  const playSound = (type: 'correct' | 'wrong') => {
+    const audio = new Audio(type === 'correct' ? '/correct.mp3' : '/wrong.mp3')
+    audio.play()
+  }
+
   const checkAnswer = () => {
     if (!currentProblem) return
 
@@ -102,10 +110,16 @@ export default function MathZone({ progress, onProgressUpdate, onBack }: MathZon
       setScore((prev) => prev + 10 + streak * 2)
       setStreak((prev) => prev + 1)
       setFeedback("correct")
+      playSound('correct')
+      setShowConfetti(true)
+      setTimeout(() => setShowConfetti(false), 1200)
     } else {
       setLives((prev) => prev - 1)
       setStreak(0)
       setFeedback("incorrect")
+      playSound('wrong')
+      setShake(true)
+      setTimeout(() => setShake(false), 600)
     }
 
     setProblemCount((prev) => prev + 1)
@@ -242,7 +256,8 @@ export default function MathZone({ progress, onProgressUpdate, onBack }: MathZon
   }
 
   return (
-    <div className="min-h-screen p-8">
+    <div className={`min-h-screen p-8 ${shake ? 'animate-shake' : ''}`}>
+      <Confetti show={showConfetti} />
       <div className="max-w-2xl mx-auto">
         {/* Game Header */}
         <div className="flex justify-between items-center mb-8">

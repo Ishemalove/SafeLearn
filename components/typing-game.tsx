@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { ArrowLeft, Star, Zap } from "lucide-react"
+import Confetti from "@/components/ui/confetti"
 
 interface TypingGameProps {
   progress: any
@@ -53,6 +54,8 @@ export default function TypingGame({ progress, onProgressUpdate, onBack }: Typin
   const [timeLeft, setTimeLeft] = useState(60)
   const [wordsTyped, setWordsTyped] = useState(0)
   const [accuracy, setAccuracy] = useState(100)
+  const [showConfetti, setShowConfetti] = useState(false)
+  const [shake, setShake] = useState(false)
 
   const spawnWord = useCallback(() => {
     const newWord: FallingWord = {
@@ -111,6 +114,11 @@ export default function TypingGame({ progress, onProgressUpdate, onBack }: Typin
     }
   }, [lives])
 
+  const playSound = (type: 'correct' | 'wrong') => {
+    const audio = new Audio(type === 'correct' ? '/correct.mp3' : '/wrong.mp3')
+    audio.play()
+  }
+
   const handleWordTyped = (typedWord: string) => {
     const matchedWord = fallingWords.find((word) => word.word.toLowerCase() === typedWord.toLowerCase())
 
@@ -119,13 +127,19 @@ export default function TypingGame({ progress, onProgressUpdate, onBack }: Typin
       setScore((prev) => prev + matchedWord.word.length * 10)
       setWordsTyped((prev) => prev + 1)
       setCurrentInput("")
-
+      playSound('correct')
+      setShowConfetti(true)
+      setTimeout(() => setShowConfetti(false), 1200)
       // Play success sound (visual feedback)
       const element = document.getElementById("success-feedback")
       if (element) {
         element.classList.add("animate-ping")
         setTimeout(() => element.classList.remove("animate-ping"), 500)
       }
+    } else {
+      playSound('wrong')
+      setShake(true)
+      setTimeout(() => setShake(false), 600)
     }
   }
 
@@ -251,7 +265,8 @@ export default function TypingGame({ progress, onProgressUpdate, onBack }: Typin
   }
 
   return (
-    <div className="min-h-screen p-4 relative overflow-hidden">
+    <div className={`min-h-screen p-8 ${shake ? 'animate-shake' : ''}`}>
+      <Confetti show={showConfetti} />
       {/* Game Header */}
       <div className="flex justify-between items-center mb-4 relative z-10">
         <Button onClick={() => setGameState("menu")} variant="outline" size="sm">
