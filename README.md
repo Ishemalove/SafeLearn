@@ -1,6 +1,6 @@
 # SafeLearn
 
-SafeLearn Junior is an interactive educational web application designed to make learning fun and engaging for children. The app features a variety of learning modules, including math games, quizzes, typing practice, and achievement tracking, all within a safe and user-friendly environment.
+SafeLearn is an interactive educational web application designed to make learning fun and engaging for children. The app features a variety of learning modules, including math games, quizzes, typing practice, and achievement tracking, all within a safe and user-friendly environment.
 
 ## Features
 
