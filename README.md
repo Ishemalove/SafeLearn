@@ -78,3 +78,4 @@ pnpm start
 - `public/` – Static assets
 - `styles/` – Global styles
 
+                                                         
